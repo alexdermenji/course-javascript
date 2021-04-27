@@ -9,7 +9,13 @@
  Пример:
    forEach([1, 2, 3], (el) => console.log(el))
  */
-function forEach(array, fn) {}
+function forEach(array, fn) {
+  for (let i = 0; i < array.length; i++) {
+    fn(array[i], i, array);
+  }
+}
+
+forEach([1, 2, 3], (el) => console.log(el));
 
 /*
  Задание 2:
@@ -20,7 +26,16 @@ function forEach(array, fn) {}
  Пример:
    map([1, 2, 3], (el) => el ** 2) // [1, 4, 9]
  */
-function map(array, fn) {}
+function map(array, fn) {
+  const newArray = [];
+  for (let i = 0; i < array.length; i++) {
+    const newElem = fn(array[i], i, array);
+    newArray.push(newElem);
+  }
+  return newArray;
+}
+
+console.log(map([1, 2, 3], (el) => el ** 2));
 
 /*
  Задание 3:
@@ -31,7 +46,18 @@ function map(array, fn) {}
  Пример:
    reduce([1, 2, 3], (all, current) => all + current) // 6
  */
-function reduce(array, fn, initial) {}
+
+function reduce(array, fn, initial = 0) {
+  let value = initial;
+  for (let i = 0; i < array.length; i++) {
+    const currentValue = array[i];
+    value = fn(value, currentValue);
+  }
+
+  return value;
+}
+
+console.log(reduce([1, 2, 3], (all, current) => all + current, 0));
 
 /*
  Задание 4:
@@ -41,7 +67,15 @@ function reduce(array, fn, initial) {}
  Пример:
    upperProps({ name: 'Сергей', lastName: 'Петров' }) вернет ['NAME', 'LASTNAME']
  */
-function upperProps(obj) {}
+
+function upperProps(obj) {
+  const newArr = [];
+  for (const el in obj) {
+    newArr.push(el.toUpperCase());
+  }
+  return newArr;
+}
+console.log(upperProps({ name: 'Сергей', lastName: 'Петров' }));
 
 /*
  Задание 5 *:
@@ -54,6 +88,18 @@ function upperProps(obj) {}
    obj.foo = 2;
    console.log(obj.foo); // 4
  */
-function createProxy(obj) {}
+function createProxy(obj) {
+  obj = new Proxy(obj, {
+    set(obj, prop, val) {
+      obj[prop] = val * val;
+      return true;
+    },
+  });
+  return obj;
+}
 
-export { forEach, map, reduce, upperProps, createProxy };
+const obj = createProxy({});
+obj.foo = 4;
+console.log(obj.foo); // 4
+
+// export { forEach, map, reduce, upperProps, createProxy };
