@@ -47,17 +47,24 @@ console.log(map([1, 2, 3], (el) => el ** 2));
    reduce([1, 2, 3], (all, current) => all + current) // 6
  */
 
-function reduce(array, fn, initial = 0) {
+function reduce(array, fn, initial) {
   let value = initial;
   for (let i = 0; i < array.length; i++) {
     const currentValue = array[i];
-    value = fn(value, currentValue);
+    value = fn(value, currentValue, i, array); //зачем последние 2 аргумента?
   }
 
   return value;
 }
 
-console.log(reduce([1, 2, 3], (all, current) => all + current, 0));
+// function reduce(array, fn, initial) {
+//   let sum = initial;
+//   for (let i = 0; i < array.length; i++) {
+//     sum = fn(sum, array[i], i, array);
+//   }
+//   return sum;
+
+console.log(reduce([1, 2, 3], (all, current) => all + current));
 
 /*
  Задание 4:
@@ -102,4 +109,4 @@ const obj = createProxy({});
 obj.foo = 4;
 console.log(obj.foo); // 4
 
-// export { forEach, map, reduce, upperProps, createProxy };
+export { forEach, map, reduce, upperProps, createProxy };
