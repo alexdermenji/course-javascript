@@ -107,12 +107,21 @@ function returnBadArguments(fn, ...args) {
   if (typeof fn !== 'function') {
     throw new Error('fn is not a function');
   }
-  let result = [];
+  const result = [];
   for (let i = 0; i < args.length; i++) {
-    result = fn(args[i]);
+    try {
+      fn(args[i]);
+    } catch {
+      result.push(args[i]);
+    }
   }
 
   return result;
+}
+try {
+  console.log(returnBadArguments((a) => a, 1, 2, 3));
+} catch (e) {
+  console.log(e.message);
 }
 
 /*
