@@ -48,21 +48,15 @@ console.log(map([1, 2, 3], (el) => el ** 2));
  */
 
 function reduce(array, fn, initial) {
-  let value = initial;
-  for (let i = 0; i < array.length; i++) {
+  let acc = initial || array[0];
+  const initialI = initial ? 0 : 1;
+  for (let i = initialI; i < array.length; i++) {
     const currentValue = array[i];
-    value = fn(value, currentValue, i, array); //зачем последние 2 аргумента?
+    acc = fn(acc, currentValue, i, array);
   }
 
-  return value;
+  return acc;
 }
-
-// function reduce(array, fn, initial) {
-//   let sum = initial;
-//   for (let i = 0; i < array.length; i++) {
-//     sum = fn(sum, array[i], i, array);
-//   }
-//   return sum;
 
 console.log(reduce([1, 2, 3], (all, current) => all + current));
 
