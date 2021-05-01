@@ -107,6 +107,7 @@ function returnBadArguments(fn, ...args) {
   if (typeof fn !== 'function') {
     throw new Error('fn is not a function');
   }
+
   const result = [];
   for (let i = 0; i < args.length; i++) {
     try {
