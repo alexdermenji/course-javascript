@@ -15,8 +15,6 @@ function forEach(array, fn) {
   }
 }
 
-forEach([1, 2, 3], (el) => console.log(el));
-
 /*
  Задание 2:
 
@@ -27,15 +25,12 @@ forEach([1, 2, 3], (el) => console.log(el));
    map([1, 2, 3], (el) => el ** 2) // [1, 4, 9]
  */
 function map(array, fn) {
-  const newArray = [];
+  const result = [];
   for (let i = 0; i < array.length; i++) {
-    const newElem = fn(array[i], i, array);
-    newArray.push(newElem);
+    result[i] = fn(array[i], i, array);
   }
-  return newArray;
+  return result;
 }
-
-console.log(map([1, 2, 3], (el) => el ** 2));
 
 /*
  Задание 3:
@@ -48,17 +43,14 @@ console.log(map([1, 2, 3], (el) => el ** 2));
  */
 
 function reduce(array, fn, initial) {
-  let acc = initial || array[0];
+  let accumulator = initial || array[0];
   const initialI = initial ? 0 : 1;
   for (let i = initialI; i < array.length; i++) {
     const currentValue = array[i];
-    acc = fn(acc, currentValue, i, array);
+    accumulator = fn(accumulator, currentValue, i, array);
   }
-
-  return acc;
+  return accumulator;
 }
-
-console.log(reduce([1, 2, 3], (all, current) => all + current));
 
 /*
  Задание 4:
@@ -76,7 +68,6 @@ function upperProps(obj) {
   }
   return newArr;
 }
-console.log(upperProps({ name: 'Сергей', lastName: 'Петров' }));
 
 /*
  Задание 5 *:
@@ -98,9 +89,5 @@ function createProxy(obj) {
   });
   return obj;
 }
-
-const obj = createProxy({});
-obj.foo = 4;
-console.log(obj.foo); // 4
 
 export { forEach, map, reduce, upperProps, createProxy };
