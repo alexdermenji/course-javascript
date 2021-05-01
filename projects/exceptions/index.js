@@ -36,15 +36,6 @@ function isAllTrue(array, fn) {
   return result;
 }
 
-try {
-  console.log(isAllTrue([1, 2, 3, 4, 5], (n) => n < 10));
-  console.log(
-    isAllTrue([100, 2, 3, 4, 5], (n) => n < 10) // вернет false
-  );
-} catch (e) {
-  console.log(e.message);
-}
-
 /*
  Задание 2:
 
@@ -80,18 +71,6 @@ function isSomeTrue(array, fn) {
   return result;
 }
 
-try {
-  console.log(
-    isSomeTrue([1, 2, 30, 4, 5], (n) => n > 20) // вернет true
-  );
-
-  console.log(
-    isSomeTrue([1, 2, 3, 4, 5], (n) => n > 20) // вернет false
-  );
-} catch (e) {
-  console.log(e.message);
-}
-
 /*
  Задание 3:
 
@@ -118,11 +97,6 @@ function returnBadArguments(fn, ...args) {
   }
 
   return result;
-}
-try {
-  console.log(returnBadArguments((a) => a, 1, 2, 3));
-} catch (e) {
-  console.log(e.message);
 }
 
 /*
@@ -181,12 +155,6 @@ function calculator(number = 0) {
   };
 
   return obj;
-}
-
-try {
-  console.log(calculator(2).div(1, 2, 3, 4, 5));
-} catch (e) {
-  console.log(e.message);
 }
 
 /* При решении задач, постарайтесь использовать отладчик */
