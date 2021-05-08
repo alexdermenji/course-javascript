@@ -29,7 +29,7 @@
    homeworkContainer.appendChild(newDiv);
  */
 
-import './towns.html';
+// import './towns.html';
 
 const homeworkContainer = document.querySelector('#app');
 
@@ -39,7 +39,36 @@ const homeworkContainer = document.querySelector('#app');
  Массив городов пожно получить отправив асинхронный запрос по адресу
  https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json
  */
-function loadTowns() {}
+
+// Your loader styling, mine is just text that I display and hide
+// loader.style.display = 'block';
+// const nextContent = await fetchData();
+// loader.style.display = 'none';
+
+// content.innerHTML = nextContent;
+
+function loadTowns() {
+  return new Promise(function (resolve, reject) {
+    fetch('https://raw.githubusercontent.com/smelukov/citiesTest/master/cities.json')
+      .then((response) => response.json())
+      .then((towns) => {
+        const townArr = [];
+        for (const town of towns) {
+          townArr.push(town);
+        }
+        townArr.sort(function (a, b) {
+          if (a.name < b.name) {
+            return -1;
+          }
+          if (a.name > b.name) {
+            return 1;
+          }
+          return 0;
+        });
+        resolve(townArr);
+      });
+  });
+}
 
 /*
  Функция должна проверять встречается ли подстрока chunk в строке full
@@ -52,23 +81,46 @@ function loadTowns() {}
    isMatching('Moscow', 'SCO') // true
    isMatching('Moscow', 'Moscov') // false
  */
-function isMatching(full, chunk) {}
+function isMatching(full, chunk) {
+  const isExist = full.toLowerCase().includes(chunk.toLowerCase());
+  return isExist;
+}
 
 /* Блок с надписью "Загрузка" */
 const loadingBlock = homeworkContainer.querySelector('#loading-block');
 /* Блок с надписью "Не удалось загрузить города" и кнопкой "Повторить" */
-const loadingFailedBlock = homeworkContainer.querySelector('#loading-failed');
+// const loadingFailedBlock = homeworkContainer.querySelector('#loading-failed');
 /* Кнопка "Повторить" */
 const retryButton = homeworkContainer.querySelector('#retry-button');
 /* Блок с текстовым полем и результатом поиска */
-const filterBlock = homeworkContainer.querySelector('#filter-block');
+// const filterBlock = homeworkContainer.querySelector('#filter-block');
 /* Текстовое поле для поиска по городам */
 const filterInput = homeworkContainer.querySelector('#filter-input');
 /* Блок с результатами поиска */
 const filterResult = homeworkContainer.querySelector('#filter-result');
 
+filterInput.style.display = 'none';
+
 retryButton.addEventListener('click', () => {});
 
-filterInput.addEventListener('input', function () {});
+loadTowns().then((towns) => {
+  loadingBlock.style.display = 'none';
+  filterInput.style.display = 'block';
+  for (const town of towns) {
+    filterResult.textContent += `${town.name}`;
+  }
 
-export { loadTowns, isMatching };
+  filterInput.addEventListener('input', function (event) {
+    const inputValue = event.target.value;
+    const results = [];
+
+    for (const town of towns) {
+      if (isMatching(town.name, inputValue)) {
+        results.push(town.name);
+      }
+    }
+    filterResult.textContent = results.join('\n');
+  });
+});
+
+// export { loadTowns, isMatching };
