@@ -6,6 +6,13 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+
+  <style>
+    .hidden {
+      display: none
+    }
+  </style>
+
 </head>
 
 <body>
@@ -23,11 +30,11 @@
 
     <div id="app">
       <div id="loading-block">Загрузка...</div>
-      <div id="loading-failed">
+      <div id="loading-failed" class="hidden">
         <div>Не удалось загрузить города</div>
         <button id="retry-button">Повторить</button>
       </div>
-      <div id="filter-block">
+      <div id="filter-block" class="hidden">
         <input id="filter-input" placeholder="название города" type="text">
 
         <div id="filter-result"></div>
