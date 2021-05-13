@@ -15,17 +15,69 @@
    const newDiv = document.createElement('div');
    homeworkContainer.appendChild(newDiv);
  */
-import './dnd.html';
+// import './dnd.html';
 
 const homeworkContainer = document.querySelector('#app');
 
-document.addEventListener('mousemove', (e) => {});
-
-export function createDiv() {}
+// export function createDiv() {}
 
 const addDivButton = homeworkContainer.querySelector('#addDiv');
 
 addDivButton.addEventListener('click', function () {
   const div = createDiv();
   homeworkContainer.appendChild(div);
+
+  div.onmousedown = function (event) {
+    div.ondragstart = function () {
+      return false;
+    };
+
+    const shiftX = event.clientX - div.getBoundingClientRect().left;
+    const shiftY = event.clientY - div.getBoundingClientRect().top;
+
+    function moveAt(pageX, pageY) {
+      div.style.left = pageX - shiftX + 'px';
+      div.style.top = pageY - shiftY + 'px';
+    }
+
+    function onMouseMove(event) {
+      moveAt(event.pageX, event.pageY);
+    }
+
+    // (3) перемещать div по экрану
+    document.addEventListener('mousemove', onMouseMove);
+
+    // (4) положить div
+    div.onmouseup = function () {
+      document.removeEventListener('mousemove', onMouseMove);
+      div.onmouseup = null;
+    };
+  };
 });
+
+function randomInteger(min, max) {
+  const rand = min + Math.random() * (max + 1 - min);
+  return Math.floor(rand);
+}
+
+function createDiv() {
+  const parentHeight = window.innerHeight;
+  const parentWidth = window.innerWidth;
+
+  const randomColor = Math.floor(Math.random() * 16777215).toString(16);
+  const randomWidth = randomInteger(1, parentWidth);
+  const randomHeight = randomInteger(1, parentHeight);
+  const randomLeft = randomInteger(0, parentWidth - randomWidth);
+  const randomTop = randomInteger(0, parentHeight - randomHeight);
+
+  const newDiv = document.createElement('div');
+  newDiv.classList.add('block');
+  newDiv.style.width = `${randomWidth}px`;
+  newDiv.style.height = `${randomHeight}px`;
+  newDiv.style.backgroundColor = `#${randomColor}`;
+  newDiv.style.left = `${randomLeft}px`;
+  newDiv.style.top = `${randomTop}px`;
+  newDiv.setAttribute('draggable', true);
+
+  return newDiv;
+}
