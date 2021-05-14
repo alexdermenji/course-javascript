@@ -45,12 +45,13 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-//2. Если куки есть тогда очищаем талицу и создаем под каждый кук ячейку
+//2. Вывод куков на экран
 function printCookies(obj) {
   if (getCookies()) {
-    listTable.innerHTML = '';
+    //Если куки есть
+    listTable.innerHTML = ''; //тогда очищаем талицу
     for (const [key, value] of Object.entries(obj)) {
-      createCell(key, value);
+      createCell(key, value); //и создаем под каждый кук ячейку
     }
   }
 }
