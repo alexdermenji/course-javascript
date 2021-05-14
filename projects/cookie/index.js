@@ -23,7 +23,7 @@
  Запрещено использовать сторонние библиотеки. Разрешено пользоваться только тем, что встроено в браузер
  */
 
-import './cookie.html';
+// import './cookie.html';
 
 /*
  app - это контейнер для всех ваших домашних заданий
@@ -45,8 +45,101 @@ const addButton = homeworkContainer.querySelector('#add-button');
 // таблица со списком cookie
 const listTable = homeworkContainer.querySelector('#list-table tbody');
 
-filterNameInput.addEventListener('input', function () {});
+function getCookies() {
+  let cookies;
+  if (document.cookie) {
+    cookies = document.cookie.split('; ').reduce((prev, current) => {
+      const [name, value] = current.split('=');
+      prev[name] = value;
+      return prev;
+    }, {});
+  }
+  return cookies;
+}
 
-addButton.addEventListener('click', () => {});
+function printCookies(obj) {
+  if (getCookies()) {
+    listTable.innerHTML = '';
+    for (const [key, value] of Object.entries(obj)) {
+      createCell(key, value);
+    }
+  }
+}
 
-listTable.addEventListener('click', (e) => {});
+function removeCookie(value) {
+  for (const child of listTable.childNodes) {
+    if (child.tagName === 'TR') {
+      if (child.firstElementChild.innerHTML === value) {
+        child.remove();
+      }
+    }
+  }
+}
+
+function createCell(name, value) {
+  const newCell = document.createElement('tr');
+  listTable.append(newCell);
+  for (let i = 0; i < 3; i++) {
+    const newTd = document.createElement('td');
+    newCell.append(newTd);
+    if (i === 0) {
+      newTd.innerHTML = name;
+    }
+    if (i === 1) {
+      newTd.innerHTML = value;
+    }
+    if (i === 2) {
+      const newButton = document.createElement('button');
+      newButton.innerHTML = 'Delete';
+      newTd.append(newButton);
+      newButton.classList.add('btn');
+    }
+  }
+}
+
+function sortCookies(key, value, symbol) {
+  const keyValue = key + value;
+  if (keyValue.includes(symbol)) {
+    return true;
+  } else return false;
+}
+
+filterNameInput.addEventListener('input', function (e) {
+  const value = e.target.value;
+  const obj = getCookies();
+  const sortObj = {};
+  for (const name in obj) {
+    if (sortCookies(name, obj[name], value)) {
+      sortObj[name] = obj[name];
+    }
+  }
+  return printCookies(sortObj);
+});
+
+addButton.addEventListener('click', () => {
+  if (document.cookie.indexOf(addNameInput.value) >= 0) {
+    removeCookie(addNameInput.value);
+  }
+  document.cookie = `${addNameInput.value}=${addValueInput.value}`;
+
+  if (sortCookies(addNameInput.value, addValueInput.value, filterNameInput.value)) {
+    createCell(addNameInput.value, addValueInput.value);
+  }
+  addNameInput.value = '';
+  addValueInput.value = '';
+});
+
+listTable.addEventListener('click', (e) => {
+  if (e.target.classList.contains('btn')) {
+    e.target.parentElement.parentElement.remove();
+    const currentCookieName =
+      e.target.parentElement.parentElement.firstElementChild.innerHTML;
+    const currentCookieValue =
+      e.target.parentElement.parentElement.firstElementChild.nextElementSibling
+        .textContent;
+
+    document.cookie = `${currentCookieName}=${currentCookieValue}; max-age=0`;
+  }
+});
+
+printCookies(getCookies());
