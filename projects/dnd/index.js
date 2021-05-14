@@ -23,33 +23,37 @@ const homeworkContainer = document.querySelector('#app');
 
 const addDivButton = homeworkContainer.querySelector('#addDiv');
 
+//1. Устанавливаем обработчик на кнопку
 addDivButton.addEventListener('click', function () {
+  //2. Создае DIV
   const div = createDiv();
   homeworkContainer.appendChild(div);
 
-  // пр клике вызываем
+  // 3. Вешаем обработчик нажатия мыши на DIV
   div.onmousedown = function (event) {
+    //4.  Отключаем стандартное поведение Drag&Drop HTML5
     div.ondragstart = function () {
       return false;
     };
 
+    //5. Собираем  в переменные точку клика
     const shiftX = event.clientX - div.getBoundingClientRect().left;
     const shiftY = event.clientY - div.getBoundingClientRect().top;
 
-    //передвинуть <div>  при движении мыши
+    //8. Двигаем DIV исходя из движения мыши учитывая точки клика
     function moveAt(pageX, pageY) {
       div.style.left = pageX - shiftX + 'px';
       div.style.top = pageY - shiftY + 'px';
     }
-    //передаем евент в функцию с координатами
+    //7. При движении мыши передаем коордианты движения
     function onMouseMove(event) {
       moveAt(event.pageX, event.pageY);
     }
 
-    // (3) перемещать div по экрану
+    //6. Вешаем обрабочик движения мыши
     document.addEventListener('mousemove', onMouseMove);
 
-    // (4) положить div и удалить обработчик
+    //9. При отпускании клика удаляем обрабочик движения мыши и обработчик опускания клика
     div.onmouseup = function () {
       document.removeEventListener('mousemove', onMouseMove);
       div.onmouseup = null;
@@ -63,7 +67,7 @@ function randomInteger(min, max) {
   return Math.floor(rand);
 }
 
-//Создать новый <DIV> со случайными размерами, цветом и рамположением
+//2. Создать новый <DIV> со случайными размерами, цветом и рамположением
 function createDiv() {
   const parentHeight = window.innerHeight;
   const parentWidth = window.innerWidth;
