@@ -27,6 +27,7 @@ addDivButton.addEventListener('click', function () {
   const div = createDiv();
   homeworkContainer.appendChild(div);
 
+  // пр клике вызываем
   div.onmousedown = function (event) {
     div.ondragstart = function () {
       return false;
@@ -35,11 +36,12 @@ addDivButton.addEventListener('click', function () {
     const shiftX = event.clientX - div.getBoundingClientRect().left;
     const shiftY = event.clientY - div.getBoundingClientRect().top;
 
+    //передвинуть <div>  при движении мыши
     function moveAt(pageX, pageY) {
       div.style.left = pageX - shiftX + 'px';
       div.style.top = pageY - shiftY + 'px';
     }
-
+    //передаем евент в функцию с координатами
     function onMouseMove(event) {
       moveAt(event.pageX, event.pageY);
     }
@@ -47,7 +49,7 @@ addDivButton.addEventListener('click', function () {
     // (3) перемещать div по экрану
     document.addEventListener('mousemove', onMouseMove);
 
-    // (4) положить div
+    // (4) положить div и удалить обработчик
     div.onmouseup = function () {
       document.removeEventListener('mousemove', onMouseMove);
       div.onmouseup = null;
@@ -55,11 +57,13 @@ addDivButton.addEventListener('click', function () {
   };
 });
 
+// Генератор случайного числа от min до max
 function randomInteger(min, max) {
   const rand = min + Math.random() * (max + 1 - min);
   return Math.floor(rand);
 }
 
+//Создать новый <DIV> со случайными размерами, цветом и рамположением
 function createDiv() {
   const parentHeight = window.innerHeight;
   const parentWidth = window.innerWidth;
