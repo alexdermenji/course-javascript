@@ -121,4 +121,4 @@ function updateFilter(filterValue) {
 
 tryToLoad();
 
-// export { loadTowns, isMatching };
+export { loadTowns, isMatching };
